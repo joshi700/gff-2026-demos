@@ -1,0 +1,965 @@
+<title>GFF 2026 Demos, Replayed</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  :root{
+    --paper:#F1F3F1; --surface:#FFFFFF; --sunk:#E7EAE7; --line:#D5DAD6;
+    --ink:#171B19; --ink-2:#4B534E; --ink-3:#727C76;
+    --accent:#CF4500; --accent-soft:#FBEDE5; --teal:#0F4C4A; --teal-soft:#E2EDEC;
+    --good:#1E7B4B; --good-soft:#E3F1E9; --warn:#A35F00; --warn-soft:#F8EEDF;
+    --shadow:0 1px 2px rgba(20,28,24,.06), 0 8px 24px -12px rgba(20,28,24,.18);
+    --display:'Archivo',system-ui,sans-serif; --body:'Source Sans 3',system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    /* recreated brand palettes */
+    --visa:#1434CB; --visa-deep:#0B1F7A; --payu:#1F9D55; --wa:#008069; --wa-bg:#EFE7DE;
+    --wa-out:#D9FDD3; --amz:#232F3E; --amz-y:#FFD814; --ppe:#5F259F; --cca:#B3272D;
+  }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+    --paper:#111413; --surface:#191D1B; --sunk:#222725; --line:#2F3533;
+    --ink:#EDEFEC; --ink-2:#B3BAB5; --ink-3:#8A938D;
+    --accent:#FF7A3D; --accent-soft:#33190D; --teal:#7FD1CB; --teal-soft:#122726;
+    --good:#67C795; --good-soft:#12271C; --warn:#E0A04A; --warn-soft:#2A2113;
+    --shadow:0 1px 2px rgba(0,0,0,.5), 0 10px 28px -14px rgba(0,0,0,.7);
+  }}
+  :root[data-theme="dark"]{
+    --paper:#111413; --surface:#191D1B; --sunk:#222725; --line:#2F3533;
+    --ink:#EDEFEC; --ink-2:#B3BAB5; --ink-3:#8A938D;
+    --accent:#FF7A3D; --accent-soft:#33190D; --teal:#7FD1CB; --teal-soft:#122726;
+    --good:#67C795; --good-soft:#12271C; --warn:#E0A04A; --warn-soft:#2A2113;
+    --shadow:0 1px 2px rgba(0,0,0,.5), 0 10px 28px -14px rgba(0,0,0,.7);
+  }
+  *{box-sizing:border-box}
+  [hidden]{display:none!important}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;
+       -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding-inline:20px;padding-block:28px 56px}
+  h1,h2,h3,h4{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+  h1{font-size:clamp(28px,4.4vw,42px);font-weight:700;margin:10px 0 8px}
+  .lede{color:var(--ink-2);max-width:66ch;font-size:17px}
+  .note{font-size:13.5px;color:var(--ink-3);max-width:70ch}
+
+  nav.tabs{display:flex;flex-wrap:wrap;gap:7px;margin:26px 0 22px;border-bottom:1px solid var(--line);padding-bottom:14px}
+  .tab{font-family:var(--display);font-weight:600;font-size:14px;background:transparent;color:var(--ink-2);
+       border:1px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer}
+  .tab:hover{color:var(--ink);border-color:var(--ink-3)}
+  .tab[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .tab:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  .demo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.8fr);gap:26px;align-items:start}
+  @media (max-width:900px){ .demo{grid-template-columns:minmax(0,1fr)} }
+  .stage{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;
+         box-shadow:var(--shadow)}
+  .recr{position:absolute;top:10px;right:12px;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;
+        text-transform:uppercase;color:var(--ink-3);background:var(--sunk);padding:3px 7px;border-radius:999px;z-index:3}
+  .side h3{font-size:19px;margin-bottom:6px}
+  .side p{color:var(--ink-2);font-size:15px;margin:0 0 12px}
+  .tag{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+       padding:3px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+  .tag.good{background:var(--good-soft);color:var(--good)} .tag.warn{background:var(--warn-soft);color:var(--warn)}
+  .steps{list-style:none;margin:0;padding:0}
+  .steps li{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:14.5px;color:var(--ink-3)}
+  .steps li:last-child{border-bottom:0}
+  .steps li .n{font-family:var(--mono);font-size:11px;width:20px;flex:none;padding-top:3px}
+  .steps li.on{color:var(--ink)} .steps li.on .n{color:var(--accent);font-weight:600}
+  .steps li.past{color:var(--ink-2)} .steps li.past .n{color:var(--good)}
+  .disclaim{background:var(--warn-soft);border-radius:10px;padding:11px 13px;font-size:13.5px;color:var(--ink-2);margin:0 0 12px}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:12px 0}
+  .kpi{background:var(--sunk);border-radius:10px;padding:10px 12px}
+  .kpi span{display:block;font-size:11.5px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+  .kpi b{font-family:var(--display);font-size:21px;font-variant-numeric:tabular-nums}
+
+  .ctl{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;justify-content:center}
+  .btn{font-family:var(--display);font-weight:600;font-size:14px;background:var(--ink);color:var(--paper);border:0;
+       border-radius:9px;padding:9px 14px;cursor:pointer}
+  .btn.ghost{background:transparent;color:var(--ink-2);border:1px solid var(--line)}
+  .btn.ghost[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .btn:disabled{opacity:.45;cursor:default}
+
+  /* ---------- device chrome ---------- */
+  .kiosk{max-width:330px;margin:0 auto;background:#0C1330;border-radius:20px;padding:10px;
+         box-shadow:0 10px 30px -14px rgba(10,16,40,.7)}
+  .kiosk .glass{background:var(--visa);border-radius:14px;min-height:500px;display:flex;flex-direction:column;
+                overflow:hidden;color:#fff;font-size:14px}
+  .kchat{flex:1;padding:12px;display:flex;flex-direction:column;gap:8px;background:#F6F7FB;color:#10163A}
+  .kmsg{max-width:88%;padding:8px 10px;border-radius:11px;font-size:13.5px;background:#fff;border:1px solid #E1E5F2}
+  .kmsg.me{align-self:flex-end;background:#E7ECFF;border-color:#CBD6FF}
+  .kcard{border:1px solid #E1E5F2;border-radius:10px;background:#fff;padding:9px;font-size:13px}
+  .krow{display:flex;justify-content:space-between;gap:8px;padding:2px 0}
+  .ktot{border-top:1px solid #E1E5F2;margin-top:5px;padding-top:5px;font-weight:700}
+  .kfull{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:22px 16px}
+  .kfull.white{background:#fff;color:#10163A}
+  .wordmark{font-family:var(--display);font-weight:700;letter-spacing:-.03em}
+  .cardart{width:210px;height:128px;border-radius:12px;background:linear-gradient(135deg,#1A3BD6,#0A1B6E);
+           color:#fff;padding:12px;display:flex;flex-direction:column;justify-content:space-between;text-align:left;
+           box-shadow:0 8px 20px -10px rgba(0,0,0,.6)}
+  .chip{width:32px;height:23px;border-radius:5px;background:linear-gradient(135deg,#E6C26B,#B8912F)}
+  .sysheet{background:#fff;color:#10163A;border-radius:12px;padding:14px;width:100%;max-width:250px;text-align:center;
+           box-shadow:0 8px 24px -12px rgba(0,0,0,.4)}
+  .facesym{font-size:30px;line-height:1}
+  .tickbig{width:52px;height:52px;border-radius:50%;background:#E3F1E9;color:#1E7B4B;display:grid;place-items:center;font-size:26px}
+
+  .phone{max-width:300px;margin:0 auto;background:#20242B;border-radius:26px;padding:9px;
+         box-shadow:0 10px 26px -14px rgba(0,0,0,.6)}
+  .pscreen{border-radius:19px;overflow:hidden;min-height:430px;display:flex;flex-direction:column;background:#fff}
+  .pos{background:#2F3B52;color:#fff;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+       gap:12px;padding:24px 16px;text-align:center}
+  .pos .big{font-family:var(--display);font-size:29px;font-weight:700;letter-spacing:-.02em}
+  .accept{background:#DCE4F7;color:#182A4E;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+          gap:10px;padding:22px 16px;text-align:center}
+  .keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;width:100%;max-width:190px}
+  .keypad span{background:#fff;border-radius:8px;padding:9px 0;text-align:center;font-family:var(--mono);font-size:14px}
+  .greenok{background:#0B3B22;color:#fff;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+           gap:9px;padding:24px 16px;text-align:center}
+  .brandfoot{display:flex;align-items:center;justify-content:center;gap:8px;padding:9px;font-size:11.5px;
+             color:rgba(255,255,255,.75);font-family:var(--mono)}
+  .brandfoot.dark{color:#3A4A6B}
+
+  .wa{max-width:310px;margin:0 auto;background:#20242B;border-radius:26px;padding:9px}
+  .wascreen{border-radius:19px;overflow:hidden;min-height:470px;display:flex;flex-direction:column;background:var(--wa-bg)}
+  .wahead{background:var(--wa);color:#fff;padding:10px 12px;display:flex;align-items:center;gap:9px}
+  .waav{width:28px;height:28px;border-radius:50%;background:#fff;color:var(--wa);display:grid;place-items:center;
+        font-family:var(--display);font-weight:700;font-size:13px}
+  .wafeed{flex:1;padding:11px;display:flex;flex-direction:column;gap:7px;overflow-y:auto;max-height:430px}
+  .wab{max-width:82%;padding:7px 10px;border-radius:9px;font-size:13.5px;background:#fff;color:#111B21;
+       box-shadow:0 1px 1px rgba(0,0,0,.08);position:relative}
+  .wab.out{align-self:flex-end;background:var(--wa-out)}
+  .watime{display:block;text-align:right;font-size:10px;color:#667781;margin-top:2px}
+  .wainput{background:#fff;border-radius:999px;margin:9px;padding:8px 12px;color:#8696A0;font-size:13px}
+
+  .win{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+  .winbar{background:#EFF1F4;padding:7px 10px;display:flex;align-items:center;gap:6px;border-bottom:1px solid #E3E6EA}
+  .winbar i{width:9px;height:9px;border-radius:50%;background:#CFD4DA;display:block}
+  .winurl{flex:1;background:#fff;border-radius:6px;font-family:var(--mono);font-size:10.5px;color:#7A828C;padding:3px 8px;
+          overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  .dash{padding:14px;color:#1C2430;font-size:13.5px;background:#fff}
+  .dashhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px}
+  .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:#8A929C}
+  .scorewrap{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center}
+  .ring{width:74px;height:74px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);
+        font-weight:700;font-size:25px;color:#1C2430}
+  .subs{display:flex;gap:16px;flex-wrap:wrap}
+  .subs div b{font-family:var(--display);font-size:20px;display:block}
+  .greenbtn{background:#1F9D55;color:#fff;border:0;border-radius:7px;padding:8px 12px;font-family:var(--display);
+            font-weight:600;font-size:13px;cursor:pointer}
+  .filelist{margin-top:10px;border-top:1px solid #E7EAEE;padding-top:9px;display:flex;flex-direction:column;gap:6px;
+            font-size:12.5px;color:#3E4753}
+  .filelist span{color:#1F9D55;font-family:var(--mono);font-size:11px;margin-right:6px}
+
+  .slide{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;color:#1B1B1B}
+  .slidehead{display:flex;align-items:center;gap:9px;margin-bottom:4px}
+  .snum{width:26px;height:26px;border-radius:50%;background:var(--amz-y);color:#1B1B1B;display:grid;place-items:center;
+        font-family:var(--display);font-weight:700;font-size:13px}
+  .slide h4{font-size:19px}
+  .prob{font-size:13px;color:#5B6169;border-bottom:2px solid var(--amz-y);display:inline-block;padding-bottom:5px;margin:6px 0 14px}
+  .jrow{display:grid;grid-template-columns:150px 1fr;gap:14px}
+  @media (max-width:640px){ .jrow{grid-template-columns:1fr} }
+  .jstep{border:1px solid #E3E1D8;border-radius:7px;background:#FFFCF0;padding:7px 9px;font-size:12.5px;text-align:center;
+         color:#8A8578;margin-bottom:6px}
+  .jstep.on{color:#1B1B1B;border-color:#D8B200;background:#FFF6D1;font-weight:600}
+  .jstep.past{color:#1B1B1B;background:#fff}
+  .claim{border:1px solid #EAE8E1;border-radius:9px;padding:10px 11px;margin-bottom:8px;display:grid;
+         grid-template-columns:1fr auto;gap:10px;align-items:center;opacity:.35}
+  .claim.show{opacity:1}
+  .claim b{display:block;font-size:13.5px} .claim p{margin:2px 0 0;font-size:12.5px;color:#5B6169}
+  .pill{border:1px solid #D8B200;border-radius:6px;padding:5px 9px;font-size:12px;white-space:nowrap;background:#FFFCF0}
+
+  .nova{background:#FBFAF9;border:1px solid var(--line);border-radius:12px;min-height:400px;display:flex;
+        flex-direction:column;color:#241A1A}
+  .novahead{padding:9px 12px;border-bottom:1px solid #EDE7E4;font-size:12.5px;color:#7A6A66;display:flex;gap:7px;align-items:center}
+  .dotlive{width:7px;height:7px;border-radius:50%;background:#1F9D55;display:block}
+  .novabody{flex:1;padding:16px;display:flex;flex-direction:column;gap:9px}
+  .novahero{margin:auto;text-align:center;max-width:330px}
+  .novaav{width:44px;height:44px;border-radius:12px;background:#5A2A2A;color:#fff;display:grid;place-items:center;
+          font-size:19px;margin:0 auto 9px}
+  .novafoot{padding:9px;text-align:center;font-size:11px;color:#9A8C88;border-top:1px solid #EDE7E4}
+  .novain{display:flex;gap:8px;align-items:center;border:1px solid #E3DBD8;border-radius:999px;padding:8px 8px 8px 14px;
+          background:#fff;font-size:13px;color:#4A3C3A}
+  .sendbtn{width:30px;height:30px;border-radius:50%;background:#241A1A;color:#fff;display:grid;place-items:center;flex:none}
+  .prod{display:flex;gap:9px;border:1px solid #EDE7E4;border-radius:10px;padding:9px;background:#fff;font-size:12.5px}
+  .swatch{width:42px;height:52px;border-radius:6px;flex:none}
+  .qr{width:86px;height:86px;display:grid;grid-template-columns:repeat(11,1fr);background:#fff;padding:4px;border:1px solid #E7E3E0}
+  .qr i{display:block;background:#fff} .qr i.on{background:#171B19}
+  .livepill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:#1F9D55;font-weight:600;
+            border:1px solid #CBE7D6;border-radius:999px;padding:3px 9px;background:#F1FAF4}
+
+  .mile{border:1px solid var(--line);border-radius:11px;padding:11px;background:var(--surface);opacity:.45}
+  .mile.on{opacity:1;border-color:var(--accent)} .mile.done{opacity:1;border-color:var(--good)}
+  .mile h5{margin:0 0 3px;font-family:var(--display);font-size:14px} .mile p{margin:0;font-size:12.5px;color:var(--ink-3)}
+  .flowgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+  .console{background:#0E2246;border-radius:12px;padding:13px;color:#C8D6F0;font-size:12.5px}
+  .console h5{font-family:var(--display);font-size:13px;color:#fff;margin:0 0 8px;letter-spacing:.04em}
+  .crcard{background:#14315F;border-radius:9px;padding:9px;margin-bottom:7px}
+  .crcard b{color:#fff;display:block;font-size:12.5px;font-weight:600}
+  .crcard span{font-family:var(--mono);font-size:10px;color:#89A6D6}
+  .log{font-family:var(--mono);font-size:11.5px;background:var(--sunk);border-radius:10px;padding:10px;
+       max-height:150px;overflow-y:auto;display:flex;flex-direction:column;gap:5px}
+  .log div{display:flex;gap:7px;color:var(--ink-2)} .log .sig{color:var(--good);flex:none}
+  .decide{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--accent-soft);border-radius:10px;padding:11px}
+  .decide p{margin:0;flex:1 1 200px;font-size:14px;color:var(--ink)}
+  .counter{font-family:var(--mono);font-size:12.5px;color:var(--ink-3);display:flex;justify-content:space-between;margin-top:8px}
+  .counter b{color:var(--ink);font-variant-numeric:tabular-nums}
+
+  .foot{margin-top:40px;border-top:1px solid var(--line);padding-top:16px;display:flex;flex-wrap:wrap;gap:14px;
+        justify-content:space-between;align-items:baseline}
+  @media (prefers-reduced-motion:reduce){ *{transition:none!important;animation:none!important} }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Global Fintech Fest 2026 &#183; Mumbai</p>
+    <h1>GFF 2026 Demos, Replayed</h1>
+    <p class="lede">Six things India's payment gateways demoed in September, rebuilt from my photographs so you can click
+      through them yourself. Every screen is a recreation drawn from what was on stage or at a booth &#8212; no real
+      payments, no real accounts, and no company's actual software.</p>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Demos">
+    <button class="tab" role="tab" id="t1" aria-controls="p1" aria-selected="true">1 &#183; Agent checkout</button>
+    <button class="tab" role="tab" id="t2" aria-controls="p2" aria-selected="false">2 &#183; OTP vs. Face ID</button>
+    <button class="tab" role="tab" id="t3" aria-controls="p3" aria-selected="false">3 &#183; The dashboard as a chat</button>
+    <button class="tab" role="tab" id="t4" aria-controls="p4" aria-selected="false">4 &#183; Found by AI shoppers</button>
+    <button class="tab" role="tab" id="t5" aria-controls="p5" aria-selected="false">5 &#183; Tap to pay</button>
+    <button class="tab" role="tab" id="t6" aria-controls="p6" aria-selected="false">6 &#183; Chat to pay</button>
+    <button class="tab" role="tab" id="t7" aria-controls="p7" aria-selected="false">7 &#183; Certification</button>
+  </nav>
+
+  <!-- 1 -->
+  <section class="demo" id="p1" role="tabpanel" aria-labelledby="t1">
+    <div class="stage"><span class="recr">Recreation</span>
+      <div class="kiosk"><div class="glass" id="k-screen"></div></div>
+      <div class="ctl" id="k-ctl"></div>
+    </div>
+    <div class="side">
+      <span class="tag">Visa kiosk &#183; processed by PayU</span>
+      <h3 style="margin-top:10px">An agent that shops, then pays</h3>
+      <p>The kiosk at Visa's stand ran the whole journey: an AI agent took the request, built a Domino's order, offered
+        saved cards, handed over to PayU, and the shopper approved with a passkey instead of an OTP.</p>
+      <ol class="steps" id="k-steps">
+        <li><span class="n">01</span><span>Shopper states intent in plain words</span></li>
+        <li><span class="n">02</span><span>Agent builds the cart</span></li>
+        <li><span class="n">03</span><span>Saved, tokenised cards offered in the chat</span></li>
+        <li><span class="n">04</span><span>Handover: &quot;pay securely with PayU&quot;</span></li>
+        <li><span class="n">05</span><span>Passkey replaces the OTP</span></li>
+        <li><span class="n">06</span><span>Payment verified, order placed</span></li>
+      </ol>
+      <div class="disclaim" style="margin-top:12px"><strong>What was real:</strong> a demo environment, not a live
+        product. Visa built it with seven Indian gateways &#8212; PayU, Razorpay, CCAvenue, Cashfree, Juspay, Paytm and
+        Pine Labs &#8212; and three banks. Mastercard ran a comparable authenticated agent payment in India in
+        February 2026, and Cashfree lists an agentic cards launch with Mastercard and Yatra.</div>
+      <p class="note"><strong>Why it matters for us:</strong> the card never appears as a number, the shopper never
+        leaves the conversation, and authentication is the only human moment. Whichever network makes that moment
+        easiest for a gateway to wire up gets the agent traffic.</p>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="demo" id="p2" role="tabpanel" aria-labelledby="t2" hidden>
+    <div class="stage"><span class="recr">Recreation</span>
+      <div class="ctl" style="justify-content:flex-start;margin:0 0 12px">
+        <button class="btn ghost" id="a-j1" aria-pressed="true">1 &#183; Shopping on Amazon</button>
+        <button class="btn ghost" id="a-j2" aria-pressed="false">2 &#183; Groceries on Amazon Now</button>
+      </div>
+      <div class="slide" id="a-slide"></div>
+      <div class="ctl" id="a-ctl"></div>
+    </div>
+    <div class="side">
+      <span class="tag">Amazon Pay &#183; Smart Wallet keynote</span>
+      <h3 style="margin-top:10px">Where the drop-offs happen</h3>
+      <p>Amazon Pay put the old journey and the new one side by side on stage. Step through the journey on the left and
+        the claims appear as each step lands, the way the slide built them up.</p>
+      <p>India requires a second factor on online card payments, which has usually meant an SMS OTP. Since April 2026 the
+        RBI also accepts device biometrics and passkeys &#8212; that is what makes the new journey possible, not just faster.</p>
+      <div class="kpis">
+        <div class="kpi"><span>Shopping</span><b>6 &rarr; 3</b></div>
+        <div class="kpi"><span>Groceries</span><b>5 &rarr; 1</b></div>
+        <div class="kpi"><span>PIN entries a month</span><b>25&#8211;30</b></div>
+      </div>
+      <p class="note"><strong>Why it matters for us:</strong> the biggest marketplace in India is teaching shoppers that
+        paying takes one touch. Card authentication has to feel the same, or it becomes the slow option on the page.</p>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="demo" id="p3" role="tabpanel" aria-labelledby="t3" hidden>
+    <div class="stage"><span class="recr">Recreation</span>
+      <div class="wa"><div class="wascreen">
+        <div class="wahead"><span class="waav">R</span>
+          <div><div style="font-weight:600;font-size:13.5px">Ray &#183; Business account</div>
+            <div style="font-size:11px;opacity:.85">online</div></div></div>
+        <div class="wafeed" id="r-feed"></div>
+        <div class="wainput">Message</div>
+      </div></div>
+      <div class="ctl" id="r-ctl"></div>
+    </div>
+    <div class="side">
+      <span class="tag">Razorpay RAY</span>
+      <h3 style="margin-top:10px">Ask the gateway, don't log in</h3>
+      <p>Indian merchants live on WhatsApp, so Razorpay put the dashboard there. Ask about settlements and orders &#8212;
+        then try the requests that <em>do</em> something: a refund, a product switched on, a reminder sent.</p>
+      <div class="kpis">
+        <div class="kpi"><span>Live since</span><b>3 Sep</b></div>
+        <div class="kpi"><span>Conversations</span><b>20,000+</b></div>
+      </div>
+      <p class="note"><strong>Why it matters for us:</strong> when the chat can switch on products and issue refunds,
+        support costs fall and product adoption rises &#8212; on a channel the merchant already has open all day. Our
+        services need to be callable from inside it.</p>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="demo" id="p4" role="tabpanel" aria-labelledby="t4" hidden>
+    <div class="stage"><span class="recr">Recreation</span>
+      <div class="win">
+        <div class="winbar"><i></i><i></i><i></i><span class="winurl">dashboard &#183; agents &#183; AEO scorecard</span></div>
+        <div class="dash" id="aeo-dash"></div>
+      </div>
+    </div>
+    <div class="side">
+      <span class="tag">PayU Agent HQ</span>
+      <h3 style="margin-top:10px">A score for being found by AI</h3>
+      <p>PayU's booth scored how easily an AI shopper can find a merchant. The sample perfume store scored 49 out of 100:
+        technical readiness counts for 55% of that, and how AI tools see the brand for 45%.</p>
+      <p>The radar compares the store against its competitors on brand recognition, market presence, presence quality,
+        brand pertinence and share of voice. Then it hands over files that make the store readable by agents.</p>
+      <p class="note"><strong>Why it matters for us:</strong> this is a gateway selling growth, not payments. It creates
+        a reason to stay that has nothing to do with pricing &#8212; and it is a product idea our acquiring partners
+        could use.</p>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="demo" id="p5" role="tabpanel" aria-labelledby="t5" hidden>
+    <div class="stage"><span class="recr">Recreation</span>
+      <div class="ctl" style="justify-content:flex-start;margin:0 0 12px">
+        <button class="btn ghost" id="pp-m1" aria-pressed="true">Tap to Pay</button>
+        <button class="btn ghost" id="pp-m2" aria-pressed="false">Smart Accept</button>
+        <button class="btn ghost" id="pp-m3" aria-pressed="false">Scan to Pay abroad</button>
+      </div>
+      <div class="phone"><div class="pscreen" id="pp-screen"></div></div>
+      <div class="ctl" id="pp-ctl"></div>
+    </div>
+    <div class="side">
+      <span class="tag">PhonePe &#215; Visa</span>
+      <h3 style="margin-top:10px">Three ways a card moves without a card</h3>
+      <p><strong>Tap to Pay:</strong> a Visa card saved inside PhonePe, tapped on an ordinary card machine. Launched
+        9 September for Android, rolling out in phases, built on the Visa card tokens PhonePe added in February 2025.</p>
+      <p><strong>Smart Accept:</strong> the merchant's own phone takes the card tap, with no separate card machine. On
+        stage an Axis Bank Visa card was tapped on an Android phone to pay &#8377;1,000. Announced, no rollout date.</p>
+      <p><strong>Scan to Pay abroad:</strong> scan a Visa QR code overseas and pay from PhonePe. The demo paid
+        &quot;MTR Singapore&quot;. PhonePe says 14 countries, on Visa's network rather than UPI International.</p>
+      <p class="note"><strong>Why it matters for us:</strong> Visa is using India's biggest UPI app to put cards where
+        UPI already reaches &#8212; including the smallest merchants, who never had a card machine to begin with.</p>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="demo" id="p6" role="tabpanel" aria-labelledby="t6" hidden>
+    <div class="stage"><span class="recr">Recreation</span>
+      <div class="ctl" style="justify-content:flex-start;margin:0 0 12px">
+        <button class="btn ghost" id="cc-m1" aria-pressed="true">Nova, the shopping assistant</button>
+        <button class="btn ghost" id="cc-m2" aria-pressed="false">AI Forms</button>
+      </div>
+      <div class="nova" id="cc-screen"></div>
+      <div class="ctl" id="cc-ctl"></div>
+    </div>
+    <div class="side">
+      <span class="tag">CCAvenue &#183; CommerceAI</span>
+      <h3 style="margin-top:10px">From &quot;click to pay&quot; to &quot;chat to pay&quot;</h3>
+      <p><strong>Nova</strong> is a store's own assistant: the shopper describes the occasion rather than browsing, and
+        the conversation ends at checkout. At the booth the prompt was about a wedding outfit in a lighter shade.</p>
+      <p><strong>AI Forms:</strong> a merchant describes a payment form in plain words. The assistant builds it through
+        CCAvenue's Remote MCP server and publishes it as a hosted link and a QR code.</p>
+      <div class="disclaim"><strong>Status:</strong> the AI Suite was announced on 9 September. AI Forms is still being
+        built, and Nova has no public product page. CCAvenue also announced it has integrated Visa Payment Passkey, so
+        shoppers confirm with a fingerprint or Face ID instead of an OTP.</div>
+      <p class="note"><strong>Why it matters for us:</strong> MCP is how gateway features become tools an AI agent can
+        call. Network services that are not exposed this way simply will not appear in those flows.</p>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="demo" id="p7" role="tabpanel" aria-labelledby="t7" hidden>
+    <div class="stage"><span class="recr">Recreation</span>
+      <div id="at-pick">
+        <div style="text-align:center;padding:22px 12px;border:1px solid var(--line);border-radius:12px;background:var(--sunk)">
+          <div class="wordmark" style="font-size:24px">AtOM</div>
+          <div class="lbl" style="margin-top:3px">Agentic Orchestration &amp; Messaging</div>
+          <h4 style="margin:12px 0 6px;font-size:21px">From Prompt to Production, Zero Friction</h4>
+          <p style="margin:0 auto;max-width:400px;font-size:13.5px;color:var(--ink-3)">Type a change to any UPI product
+            and watch agents take it from an idea to a certified change. Four milestones, five decisions, two screens
+            &#8212; about four minutes, and the decisions are yours.</p>
+        </div>
+        <div class="console" style="margin-top:12px">
+          <h5>BANK D &#183; AGENT CONSOLE</h5>
+          <div class="lbl" style="color:#89A6D6;margin-bottom:7px">Past changes</div>
+          <button class="crcard" style="width:100%;text-align:left;border:0;cursor:pointer"
+                  data-cr="RuPay Credit Card on UPI &#8212; at-checkout EMI conversion">
+            <b>RuPay Credit Card on UPI &#8212; at-checkout EMI conversion</b>
+            <span>CR 2024 &#183; 16 documents &#183; 2 answers</span></button>
+          <button class="crcard" style="width:100%;text-align:left;border:0;cursor:pointer"
+                  data-cr="UPI AutoPay &#8212; variable amount recurring mandates">
+            <b>UPI AutoPay &#8212; variable amount recurring mandates</b>
+            <span>CR 0553 &#183; 10 documents &#183; 1 answer</span></button>
+          <div style="font-size:11.5px;color:#89A6D6;margin-top:8px">Pick one to run it through the workflow.</div>
+        </div>
+      </div>
+      <div id="at-run" hidden>
+        <div class="flowgrid" id="at-miles"></div>
+        <div class="decide" id="at-decide" style="margin-top:12px"></div>
+        <div class="log" id="at-log" style="margin-top:12px"></div>
+        <div class="counter"><span>Human decisions taken</span><b id="at-count">0 / 5</b></div>
+        <div class="ctl"><button class="btn ghost" id="at-reset">Start over</button></div>
+      </div>
+    </div>
+    <div class="side">
+      <span class="tag">NPCI &#183; AtOM</span>
+      <h3 style="margin-top:10px">Onboarding and certification, as a queue</h3>
+      <p>Today a change to a UPI product &#8212; or a new partner joining &#8212; travels as specification documents,
+        email threads and spreadsheets between NPCI, each bank and each payment service provider. One change request on
+        the stand's own screen carried 16 documents and 2 open answers.</p>
+      <p>AtOM runs that exchange as a conversation between agents on each side: four milestones, five decisions that stay
+        with a human, and every message signed and machine-readable so it can be audited later.</p>
+      <p class="note"><strong>Why it matters for us:</strong> NPCI describes AtOM for banks and payment service
+        providers, not for merchants &#8212; but partner onboarding and certification is exactly where a network either
+        feels easy to work with or does not.</p>
+    </div>
+  </section>
+
+  <div class="foot">
+    <p class="note" style="margin:0">Recreations built from 78 photographs, a 25-second video and session recordings
+      taken at GFF 2026, 9&#8211;11 September, plus each company's own announcements. Screens are simplified sketches of
+      what was shown, drawn by hand &#8212; not screenshots, not anyone's real software, and no figure here is a
+      Mastercard number.</p>
+    <p class="note" style="margin:0"><strong>Gaurav Joshi</strong> &#183; Product Management</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var $=function(s){return document.querySelector(s)};
+  function el(t,c,h){var n=document.createElement(t); if(c)n.className=c; if(h!=null)n.innerHTML=h; return n;}
+  function ctl(box,list){
+    box.innerHTML='';
+    list.forEach(function(c){
+      var b=el('button','btn'+(c.ghost?' ghost':''),c.label);
+      if(c.dis) b.disabled=true;
+      b.addEventListener('click',c.go); box.appendChild(b);
+    });
+  }
+
+  /* ---------------- tabs ---------------- */
+  var tabs=[].slice.call(document.querySelectorAll('.tab'));
+  tabs.forEach(function(t){
+    t.addEventListener('click',function(){
+      tabs.forEach(function(o){
+        var on=o===t; o.setAttribute('aria-selected',on?'true':'false');
+        document.getElementById(o.getAttribute('aria-controls')).hidden=!on;
+      });
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+  });
+  function toggle(a,b,fa,fb){
+    a.addEventListener('click',function(){a.setAttribute('aria-pressed','true');b.setAttribute('aria-pressed','false');fa();});
+    b.addEventListener('click',function(){b.setAttribute('aria-pressed','true');a.setAttribute('aria-pressed','false');fb();});
+  }
+
+  /* ============ 1. Visa kiosk, processed by PayU ============ */
+  var kS=$('#k-screen'), kC=$('#k-ctl'), kStep=0;
+  function kMark(n){
+    [].slice.call(document.querySelectorAll('#k-steps li')).forEach(function(li,i){
+      li.className=i<n?'past':(i===n?'on':'');
+    });
+  }
+  var kChat='<div class="kchat" id="kchat">'+
+    '<div class="kmsg me">Order a pizza for two, delivered to the office.</div>'+
+    '<div class="kmsg">Domino\'s, 1.2 km away, about 30 minutes. Here is the order:</div>'+
+    '<div class="kmsg" style="max-width:100%"><div class="kcard">'+
+      '<div class="krow"><span>Veg Extravaganza, medium</span><span>&#8377;329</span></div>'+
+      '<div class="krow"><span>Garlic breadsticks</span><span>&#8377;79</span></div>'+
+      '<div class="krow"><span>Delivery and taxes</span><span>&#8377;7</span></div>'+
+      '<div class="krow ktot"><span>Total</span><span>&#8377;415</span></div></div></div>';
+  function kRender(){
+    kMark(kStep);
+    if(kStep===0){
+      kS.innerHTML='<div class="kfull white"><div class="lbl">Visa &#183; experience agentic commerce</div>'+
+        '<div style="font-size:34px">&#129302;</div>'+
+        '<h4 style="font-size:19px">Shop with an AI agent</h4>'+
+        '<p style="font-size:13px;color:#5B6580;margin:0">Tell it what you want. It finds the merchant, builds the '+
+        'cart and takes the payment.</p></div>';
+      ctl(kC,[{label:'&quot;Order a pizza for two&quot;',go:function(){kStep=1;kRender();}}]);
+    } else if(kStep===1){
+      kS.innerHTML=kChat+'<div class="kmsg">Deliver to <b>Office, 14th floor reception</b>?</div></div>';
+      ctl(kC,[{label:'Yes, that is right',go:function(){kStep=2;kRender();}}]);
+    } else if(kStep===2){
+      kS.innerHTML=kChat+'<div class="kmsg">Choose a card. These are tokens held by the gateway &#8212; the number '+
+        'itself is never shown.</div>'+
+        '<div class="kmsg" style="max-width:100%"><div class="kcard">'+
+        '<div class="krow"><b>Visa &#8226;&#8226;&#8226;&#8226; 4417</b><span>saved</span></div>'+
+        '<div class="krow" style="color:#7A8295"><span>Mastercard &#8226;&#8226;&#8226;&#8226; 9032</span><span>saved</span></div>'+
+        '</div></div></div>';
+      ctl(kC,[{label:'Pay with Visa &#8226;&#8226;&#8226;&#8226; 4417',go:function(){kStep=3;kRender();}}]);
+    } else if(kStep===3){
+      kS.innerHTML='<div class="kfull" style="background:#fff;color:#10163A">'+
+        '<div class="lbl">Pay securely with</div>'+
+        '<div class="wordmark" style="font-size:32px;color:var(--payu)">payu</div>'+
+        '<div style="width:130px;height:4px;border-radius:9px;background:#E3E8F2;overflow:hidden">'+
+        '<div style="width:60%;height:100%;background:var(--payu)"></div></div>'+
+        '<p style="font-size:12.5px;color:#5B6580;margin:0">Setting up a secure payment for &#8377;415.00</p></div>';
+      ctl(kC,[{label:'Continue',go:function(){kStep=4;kRender();}}]);
+    } else if(kStep===4){
+      kS.innerHTML='<div class="kfull">'+
+        '<div class="cardart"><div style="display:flex;justify-content:space-between;align-items:flex-start">'+
+        '<div class="chip"></div><div class="wordmark" style="font-size:17px;font-style:italic">VISA</div></div>'+
+        '<div><div style="font-family:var(--mono);font-size:13px;letter-spacing:.09em">&#8226;&#8226;&#8226;&#8226; '+
+        '&#8226;&#8226;&#8226;&#8226; &#8226;&#8226;&#8226;&#8226; 4417</div>'+
+        '<div style="font-size:10px;opacity:.8;margin-top:3px">TOKENISED FOR THIS MERCHANT</div></div></div>'+
+        '<div style="font-size:12px;opacity:.85">You are paying</div>'+
+        '<div style="font-family:var(--display);font-size:31px;font-weight:700">&#8377;415.00</div>'+
+        '<div style="font-size:11.5px;opacity:.8">Domino\'s &#183; order #GFF-2026</div></div>';
+      ctl(kC,[{label:'Pay now',go:function(){kStep=5;kRender();}}]);
+    } else if(kStep===5){
+      kS.innerHTML='<div class="kfull"><div class="sysheet">'+
+        '<div class="facesym">&#128100;</div>'+
+        '<div style="font-weight:700;margin-top:4px">Sign in</div>'+
+        '<div style="font-size:12px;color:#5B6580;margin-top:3px">Use your saved passkey to confirm this payment. '+
+        'Nothing to wait for, nothing to type.</div>'+
+        '<div style="display:flex;gap:7px;margin-top:11px">'+
+        '<div style="flex:1;border:1px solid #DDE1EA;border-radius:7px;padding:7px;font-size:12px">Cancel</div>'+
+        '<div style="flex:1;background:var(--visa);color:#fff;border-radius:7px;padding:7px;font-size:12px">Continue</div>'+
+        '</div></div>'+
+        '<div class="lbl" style="color:rgba(255,255,255,.8)">Authentication required</div></div>';
+      ctl(kC,[
+        {label:'Approve with passkey',go:function(){kStep=6;kRender();}},
+        {label:'Send me an OTP instead',ghost:true,go:function(){kStep=99;kRender();}}
+      ]);
+    } else if(kStep===99){
+      kMark(4);
+      kS.innerHTML='<div class="kfull"><div class="sysheet">'+
+        '<div style="font-weight:700">Waiting for the SMS</div>'+
+        '<div style="display:flex;gap:5px;justify-content:center;margin:9px 0">'+
+        '<span style="width:26px;height:33px;border:1px solid #DDE1EA;border-radius:6px;display:inline-block"></span>'.repeat(6)+
+        '</div>'+
+        '<div style="height:5px;border-radius:9px;background:#EDEFF4;overflow:hidden">'+
+        '<div id="k-wait" style="height:100%;width:8%;background:#A35F00;transition:width .3s linear"></div></div>'+
+        '<div style="font-size:11.5px;color:#5B6580;margin-top:7px">Resend in 30 seconds. This is the step where the '+
+        'sale is lost.</div></div></div>';
+      var p=8, t=setInterval(function(){
+        var b=document.getElementById('k-wait'); if(!b){clearInterval(t);return;}
+        p+=11; b.style.width=Math.min(p,100)+'%'; if(p>=100) clearInterval(t);
+      },300);
+      ctl(kC,[{label:'Go back to the passkey',go:function(){kStep=5;kRender();}}]);
+    } else {
+      kS.innerHTML='<div class="kfull white"><div class="tickbig">&#10003;</div>'+
+        '<div style="font-weight:700;font-size:16px">Payment verified and your order is placed</div>'+
+        '<div style="font-family:var(--display);font-size:30px;font-weight:700">&#8377;415</div>'+
+        '<div class="lbl">Processed by payu &#183; Visa Payment Passkey</div></div>';
+      ctl(kC,[{label:'Run it again',ghost:true,go:function(){kStep=0;kRender();}}]);
+    }
+  }
+  kRender();
+
+  /* ============ 2. Amazon Pay journeys ============ */
+  var J={
+    shop:{ n:1, title:'Shopping on Amazon',
+      probOld:'Customer problem &#8212; too many steps, too much waiting, payments that fail.',
+      probNew:'Customer problem addressed &#8212; fewer steps. No waiting. Fewer failed payments.',
+      old:['Checkout page','Payment page opens','Pick a card','Bank page','Wait for the OTP','Type six digits'],
+      neu:['Tap Buy Now','Order details pop up, pre-filled','Fingerprint or Face ID'],
+      claims:[['No separate page at all.','The order details open right over the product you were looking at.','6 steps reduced to 3'],
+              ['Nothing left to give up on.','Address, payment and the best offer are already chosen for you.','Lower drop-offs'],
+              ['No OTP, no waiting.','Your fingerprint or Face ID confirms the payment on the spot.','Wait time eliminated']]},
+    groc:{ n:2, title:'Ordering Groceries on Amazon Now',
+      probOld:'Customer problem &#8212; the commerce has become &quot;quick&quot; while the payments have not.',
+      probNew:'Customer problem addressed &#8212; no PIN on any order. Nothing fails at the last step.',
+      old:['Proceed to pay','Pick UPI','Type your UPI PIN','Wait','Hope it goes through'],
+      neu:['Add to cart','Reserve Pay already chosen','One tap places the order'],
+      claims:[['No PIN, on any order.','Set aside once, and every order after that goes through with nothing to type.','5 steps reduced to 1'],
+              ['Nothing fails at the last step.','Already set aside in your own bank, so a busy bank cannot stop it.','Higher payment success rate'],
+              ['The month stays on budget.','Available balance shows up when you pay, and spending stops at the limit.','Grocery spend under control']]}
+  };
+  var jKey='shop', jNew=false, jStep=0;
+  function jRender(){
+    var j=J[jKey], list=jNew?j.neu:j.old, shown=jNew?jStep:0;
+    var steps=list.map(function(s,i){
+      var cls=i<jStep?'past':(i===jStep?'on':'');
+      return '<div class="jstep '+cls+'">'+s+'</div>';
+    }).join('');
+    var claims=j.claims.map(function(c,i){
+      return '<div class="claim '+(jNew&&i<shown?'show':'')+'"><div><b>'+c[0]+'</b><p>'+c[1]+'</p></div>'+
+             '<span class="pill">'+c[2]+'</span></div>';
+    }).join('');
+    $('#a-slide').innerHTML='<div class="slidehead"><span class="snum">'+j.n+'</span><h4>'+j.title+'</h4></div>'+
+      '<div class="prob">'+(jNew?j.probNew:j.probOld)+'</div>'+
+      '<div class="jrow"><div><div class="lbl" style="margin-bottom:6px">'+(jNew?'New journey':'Journey today')+'</div>'+
+      steps+'</div><div>'+(jNew?claims:'<div class="claim show"><div><b>'+
+      (jKey==='shop'?'The PIN, the OTP, the wait.':'The PIN, 25&#8211;30 times a month.')+'</b><p>'+
+      (jKey==='shop'?'A separate payment page, a bank page, then an SMS that takes its time.':
+       'The same effort for a &#8377;400 order as for a &#8377;4,000 one. A weak signal, and you are back to a full cart.')+
+      '</p></div><span class="pill">'+(jKey==='shop'?'6 steps':'5 steps, every single order')+'</span></div>')+'</div></div>';
+    var last=jStep>=list.length-1;
+    ctl($('#a-ctl'),[
+      {label:jNew?'Next step':'Next step',dis:last,go:function(){jStep=Math.min(jStep+1,list.length-1);jRender();}},
+      {label:jNew?'Show the old journey':'Show the new journey',ghost:true,go:function(){jNew=!jNew;jStep=0;jRender();}}
+    ]);
+  }
+  toggle($('#a-j1'),$('#a-j2'),function(){jKey='shop';jStep=0;jRender();},function(){jKey='groc';jStep=0;jRender();});
+  jRender();
+
+  /* ============ 3. RAY on WhatsApp ============ */
+  var rFeed=$('#r-feed');
+  var rAsks=[
+    {q:'Hey Ray! When&#39;s my next settlement?',
+     a:'Today&#39;s settlement of <b>&#8377;25,20,521</b> is already on the way. To be settled by 2pm.'},
+    {q:'How many orders did I receive today?',
+     a:'<b>412 orders</b> so far today, worth &#8377;6,71,300 &#8212; 14% ahead of last Tuesday. UPI is 68% of them, cards 24%.'},
+    {q:'Show payment analytics by method',
+     a:'Cards are converting at <b>94.2%</b> this week, UPI at 91.8%. One bank&#39;s UPI success rate dipped after 4pm yesterday &#8212; I am watching it.'},
+    {q:'Process a refund for this payment',act:1,
+     a:'Refund of <b>&#8377;1,499</b> issued for order 8821. The customer will see it in 3&#8211;5 working days.<br><span style="color:#667781;font-size:11.5px">Reference RFND-8821-02</span>'},
+    {q:'Enable subscription payments',act:1,
+     a:'Sure! Razorpay Subscriptions are now <b>enabled</b> on your account. Your first mandate can be created straight away.'},
+    {q:'Send a payment-link reminder',act:1,
+     a:'Reminder sent to <b>7 customers</b> with unpaid links from this week, on WhatsApp.'}
+  ];
+  var rTime=601;
+  function rClock(){ rTime++; var h=Math.floor(rTime/60), m=rTime%60; return (h<10?'0':'')+h+':'+(m<10?'0':'')+m+' AM'; }
+  function rBub(cls,html){
+    var b=el('div','wab'+(cls?' '+cls:''),html+'<span class="watime">'+rClock()+(cls?' &#10003;&#10003;':'')+'</span>');
+    rFeed.appendChild(b); rFeed.scrollTop=rFeed.scrollHeight;
+  }
+  function rStart(){
+    rFeed.innerHTML=''; rTime=601;
+    rBub('','Good morning. Ask me anything about your payments &#8212; or tell me what to do.');
+    ctl($('#r-ctl'),rAsks.map(function(a){
+      return {label:a.q.replace('Hey Ray! ',''),ghost:true,go:function(){
+        rBub('out',a.q);
+        setTimeout(function(){ if(a.act) rBub('','<span style="color:#1F9D55;font-size:11.5px;font-weight:600">'+
+          'ACTION TAKEN ON YOUR ACCOUNT</span><br>'+a.a); else rBub('',a.a); },320);
+      }};
+    }).concat([{label:'Start over',go:rStart}]));
+  }
+  rStart();
+
+  /* ============ 4. PayU AEO scorecard ============ */
+  function radar(){
+    var axes=['Brand recognition','Market presence','Presence quality','Brand pertinence','Share of voice'];
+    var you=[63,55,48,74,46], comp=[78,72,69,66,71], cx=160, cy=100, R=62;
+    function pts(v){ return v.map(function(val,i){
+      var a=-Math.PI/2 + i*2*Math.PI/5, r=R*val/100;
+      return (cx+r*Math.cos(a)).toFixed(1)+','+(cy+r*Math.sin(a)).toFixed(1);
+    }).join(' '); }
+    var rings=[0.25,0.5,0.75,1].map(function(f){
+      return '<polygon points="'+pts([100*f,100*f,100*f,100*f,100*f])+'" fill="none" stroke="#E3E7EC" stroke-width="1"/>';
+    }).join('');
+    var labels=axes.map(function(t,i){
+      var a=-Math.PI/2 + i*2*Math.PI/5, r=R+14;
+      var x=cx+r*Math.cos(a), y=cy+r*Math.sin(a);
+      var anc = Math.abs(Math.cos(a))<0.3 ? 'middle' : (Math.cos(a)>0?'start':'end');
+      return '<text x="'+x.toFixed(1)+'" y="'+(y+3).toFixed(1)+'" text-anchor="'+anc+'" font-size="7.5" fill="#8A929C" '+
+             'font-family="monospace">'+t+'</text>';
+    }).join('');
+    return '<svg viewBox="0 0 320 206" width="100%" style="max-width:330px" role="img" '+
+      'aria-label="Radar chart: this store against competitors on five measures">'+rings+
+      '<polygon points="'+pts(comp)+'" fill="none" stroke="#B9C0C9" stroke-width="1.4" stroke-dasharray="4 3"/>'+
+      '<polygon points="'+pts(you)+'" fill="rgba(31,157,85,.16)" stroke="#1F9D55" stroke-width="1.8"/>'+labels+'</svg>';
+  }
+  function aeoRender(showFiles){
+    var ring='conic-gradient(#1F9D55 0 49%, #E7EAEE 49% 100%)';
+    $('#aeo-dash').innerHTML=
+      '<div class="dashhead"><div><div class="wordmark" style="font-size:19px;color:#1C2430">payu</div>'+
+        '<div class="lbl" style="margin-top:6px">AEO scorecard</div>'+
+        '<div style="font-family:var(--display);font-weight:700;font-size:17px">Perfumery &#183; analysed 5 Sept 2026</div>'+
+        '<div style="font-size:11.5px;color:#8A929C">https://perfumery.co.in</div></div>'+
+        '<span class="lbl" style="white-space:nowrap">Live mode</span></div>'+
+      '<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:center">'+
+        '<div><div class="lbl">Overall score</div>'+
+          '<div class="scorewrap" style="margin-top:8px">'+
+            '<div style="width:74px;height:74px;border-radius:50%;background:'+ring+';display:grid;place-items:center">'+
+              '<div class="ring" style="width:58px;height:58px;background:#fff">49</div></div>'+
+            '<div><b style="font-family:var(--display);font-size:14px">Agentic discoverability</b>'+
+            '<div style="font-size:12.5px;color:#5B6169">Moderate</div></div></div>'+
+          '<div class="subs" style="margin-top:14px">'+
+            '<div><span class="lbl">Technical &#183; 55% weight</span><b>43<span style="font-size:12px;color:#8A929C">/100</span></b></div>'+
+            '<div><span class="lbl">AI brand perception &#183; 45%</span><b>47<span style="font-size:12px;color:#8A929C">/100</span></b></div>'+
+          '</div>'+
+          '<p style="font-size:12px;color:#5B6169;margin:12px 0 0"><b>What these scores mean.</b> Technical checks how '+
+          'easily a machine can read your store: a secure site, a homepage an agent can reach, a catalogue in a '+
+          'structured format. Brand perception checks how AI tools describe you next to your competitors.</p></div>'+
+        '<div><div class="lbl" style="text-align:center">Scorecard &#183; AI brand perception 47/100</div>'+
+          '<div style="display:grid;place-items:center">'+radar()+'</div>'+
+          '<div style="display:flex;gap:14px;justify-content:center;font-size:11px;color:#5B6169">'+
+            '<span><b style="color:#1F9D55">&#9472;&#9472;</b> You</span>'+
+            '<span><b style="color:#B9C0C9">&#9476;&#9476;</b> Competitors</span></div></div></div>'+
+      '<div style="border-top:1px solid #E7EAEE;margin-top:12px;padding-top:11px;display:flex;'+
+        'justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap">'+
+        '<div style="flex:1 1 220px"><b style="font-size:13px">What to do next</b>'+
+        '<p style="margin:3px 0 0;font-size:12px;color:#5B6169">Publish the machine-readable files an agent needs to '+
+        'list, price and buy from you.</p></div>'+
+        '<button class="greenbtn" id="aeo-dl">Download bundle</button></div>'+
+      (showFiles?'<div class="filelist">'+
+        '<div><span>&#10003;</span>catalogue.json &#8212; products, prices and stock in a structured format</div>'+
+        '<div><span>&#10003;</span>schema templates &#8212; one per page type, so an agent knows what it is reading</div>'+
+        '<div><span>&#10003;</span>availability feed &#8212; so an agent never offers what you cannot ship</div>'+
+        '<div><span>&#10003;</span>brand profile &#8212; the answers assistants give when asked about you</div>'+
+        '<div style="color:#8A929C"><span>&#8594;</span>Re-score after publishing: the technical half is the part you '+
+        'can fix this week.</div></div>':'');
+    $('#aeo-dl').addEventListener('click',function(){aeoRender(true);});
+  }
+  aeoRender(false);
+
+  /* ============ 5. PhonePe x Visa ============ */
+  var ppMode='tap', ppStep=0;
+  var ppFlows={
+    tap:[
+      {h:'The card machine is ready',s:'pos',amt:'&#8377;1,000.00',sub:'Tap or insert Card',cta:'Open the card in PhonePe'},
+      {h:'Your Visa card, inside PhonePe',s:'app',cta:'Tap the phone on the machine'},
+      {h:'Tapped',s:'pos',amt:'&#8377;1,000.00',sub:'Hold steady &#8212; reading the card',cta:'Continue'},
+      {h:'Done',s:'ok',cta:'Run it again'}
+    ],
+    accept:[
+      {h:'The merchant enters the amount',s:'pad',amt:'&#8377;700',cta:'Charge &#8377;1,000 instead'},
+      {h:'Ready for the tap',s:'accept',amt:'&#8377;1,000.00',sub:'Tap the customer&#39;s card on this phone',cta:'Tap the card'},
+      {h:'Card tapped on the phone',s:'accept',amt:'&#8377;1,000.00',sub:'Processing payment of',proc:true,cta:'Continue'},
+      {h:'Done',s:'ok',cta:'Run it again'}
+    ],
+    scan:[
+      {h:'A Visa QR code, in Singapore',s:'qr',cta:'Scan it with PhonePe'},
+      {h:'MTR Singapore',s:'sgd',cta:'Pay'},
+      {h:'Done',s:'okscan',cta:'Run it again'}
+    ]
+  };
+  function ppRender(){
+    var f=ppFlows[ppMode], st=f[ppStep], S=$('#pp-screen'), html='';
+    if(st.s==='pos'){
+      html='<div class="pos"><span class="lbl" style="color:#A9B6CE">Powered by PhonePe</span>'+
+        '<div style="font-size:12px;opacity:.85">You are paying</div><div class="big">'+st.amt+'</div>'+
+        '<div style="font-size:30px">&#128179;</div><div style="font-size:12.5px;opacity:.85">'+st.sub+'</div></div>'+
+        '<div class="brandfoot" style="background:#2F3B52">Card machine</div>';
+    } else if(st.s==='app'){
+      html='<div style="flex:1;background:var(--ppe);color:#fff;display:flex;flex-direction:column;align-items:center;'+
+        'justify-content:center;gap:12px;padding:22px 16px;text-align:center">'+
+        '<div class="lbl" style="color:rgba(255,255,255,.8)">PhonePe &#183; Tap to Pay</div>'+
+        '<div class="cardart" style="background:linear-gradient(135deg,#7B3FC4,#3D1470)">'+
+        '<div style="display:flex;justify-content:space-between"><div class="chip"></div>'+
+        '<div class="wordmark" style="font-size:16px;font-style:italic">VISA</div></div>'+
+        '<div style="font-family:var(--mono);font-size:12px;letter-spacing:.08em">&#8226;&#8226;&#8226;&#8226; 4417</div></div>'+
+        '<div style="font-size:12.5px;opacity:.9">Hold the phone against the card machine</div></div>';
+    } else if(st.s==='pad'){
+      html='<div class="accept"><span class="lbl">PhonePe Business</span>'+
+        '<div style="font-size:12px;color:#4A5C80">Enter amount</div>'+
+        '<div style="font-family:var(--display);font-size:29px;font-weight:700">'+st.amt+'</div>'+
+        '<div class="keypad"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>'+
+        '<span>7</span><span>8</span><span>9</span><span>.</span><span>0</span><span>&#9003;</span></div></div>';
+    } else if(st.s==='accept'){
+      html='<div class="accept">'+(st.proc?'':'<span class="lbl">PhonePe Business</span>')+
+        '<div style="font-size:12.5px;color:#4A5C80">'+(st.proc?st.sub:'You are collecting')+'</div>'+
+        '<div style="font-family:var(--display);font-size:29px;font-weight:700">'+st.amt+'</div>'+
+        (st.proc?'<div style="width:110px;height:5px;border-radius:9px;background:#B9C7E8;overflow:hidden">'+
+          '<div style="width:70%;height:100%;background:#5F259F"></div></div>':
+          '<div style="font-size:26px">&#128179;</div><div style="font-size:12px;color:#4A5C80">'+st.sub+'</div>')+
+        '</div><div class="brandfoot dark">PhonePe Business &#183; VISA</div>';
+    } else if(st.s==='qr'){
+      html='<div style="flex:1;background:#2A2440;color:#fff;display:flex;flex-direction:column;align-items:center;'+
+        'justify-content:center;gap:12px;padding:20px;text-align:center">'+
+        '<div class="lbl" style="color:rgba(255,255,255,.75)">Scan to Pay &#183; Singapore</div>'+
+        '<div style="background:#fff;padding:9px;border-radius:9px">'+qrBlock()+'</div>'+
+        '<div style="background:var(--ppe);border-radius:7px;padding:5px 10px;font-size:11.5px">Enabled by VISA</div></div>';
+    } else if(st.s==='sgd'){
+      html='<div class="accept" style="background:#EDE7F6"><span class="lbl">PhonePe &#183; cross border</span>'+
+        '<div style="font-size:12.5px;color:#4A5C80">Paying</div>'+
+        '<div style="font-family:var(--display);font-size:27px;font-weight:700">SGD 18.40</div>'+
+        '<div style="font-size:12.5px;color:#4A5C80">MTR Singapore</div>'+
+        '<div style="font-size:11.5px;color:#6B5F8C">&#8377;1,196 will be debited &#183; Visa rate</div></div>';
+    } else if(st.s==='okscan'){
+      html='<div class="greenok"><div class="tickbig">&#10003;</div>'+
+        '<div style="font-weight:700">Payment Successful</div>'+
+        '<div style="font-size:11.5px;opacity:.85">9 September 2026 at 10:53 AM</div>'+
+        '<div style="font-size:11.5px;opacity:.85">MTR Singapore &#183; SGD 18.40</div></div>';
+    } else {
+      html='<div class="greenok"><div class="tickbig">&#10003;</div>'+
+        '<div style="font-weight:700">Payment Successful</div>'+
+        '<div style="font-family:var(--display);font-size:26px;font-weight:700">&#8377;1,000.00</div>'+
+        '<div style="font-size:11.5px;opacity:.85">'+(ppMode==='tap'?'Visa card saved in PhonePe &#183; tapped on a card machine'
+          :'Card tapped on the merchant&#39;s phone &#183; no card machine')+'</div></div>';
+    }
+    S.innerHTML=html;
+    ctl($('#pp-ctl'),[{label:st.cta,go:function(){ ppStep=(ppStep+1)%f.length; ppRender(); }}]);
+  }
+  function qrBlock(){
+    var seed=7, cells='';
+    for(var i=0;i<121;i++){
+      seed=(seed*1103515245+12345)%2147483648;
+      var on=(seed>>16)%3!==0;
+      var r=Math.floor(i/11), c=i%11;
+      var corner=(r<3&&c<3)||(r<3&&c>7)||(r>7&&c<3);
+      if(corner) on=(r===0||r===2||c===0||c===2||(r===1&&c===1));
+      cells+='<i class="'+(on?'on':'')+'"></i>';
+    }
+    return '<div class="qr">'+cells+'</div>';
+  }
+  [['#pp-m1','tap'],['#pp-m2','accept'],['#pp-m3','scan']].forEach(function(pair){
+    $(pair[0]).addEventListener('click',function(){
+      ['#pp-m1','#pp-m2','#pp-m3'].forEach(function(s){ $(s).setAttribute('aria-pressed', s===pair[0]?'true':'false'); });
+      ppMode=pair[1]; ppStep=0; ppRender();
+    });
+  });
+  ppRender();
+
+  /* ============ 6. CCAvenue: Nova and AI Forms ============ */
+  var ccMode='nova', ccStep=0;
+  function ccRender(){
+    var S=$('#cc-screen'), body='', btns=[];
+    if(ccMode==='nova'){
+      var head='<div class="novahead"><span class="dotlive"></span> Nova AI &#183; online</div>';
+      if(ccStep===0){
+        body='<div class="novabody"><div class="novahero"><div class="novaav">&#10022;</div>'+
+          '<h4 style="font-size:20px">Hi, I&#39;m Nova &#10022;</h4>'+
+          '<p style="font-size:13px;color:#7A6A66;margin:7px 0 0">Your personal AI shopping assistant at Seasons. '+
+          'Tell me what you&#39;re looking for and I&#39;ll help you find it &#8212; new arrivals, personalised picks '+
+          'and a smooth checkout, all in one conversation.</p></div>'+
+          '<div class="novain"><span style="flex:1">I&#39;m attending a wedding and want something elegant, in a '+
+          'lighter shade.</span><span class="sendbtn">&#10148;</span></div></div>';
+        btns=[{label:'Send',go:function(){ccStep=1;ccRender();}}];
+      } else if(ccStep===1){
+        body='<div class="novabody"><div class="prod" style="align-self:flex-end;background:#F3EDEB;border:0;max-width:85%">'+
+          'I&#39;m attending a wedding and want something elegant, in a lighter shade.</div>'+
+          '<div style="font-size:13px;color:#4A3C3A">Lovely. For a daytime wedding, these three are in stock in your '+
+          'size, in lighter shades:</div>'+
+          prodCard('#E7D7C3','Ivory silk-blend kurta set','&#8377;8,990 &#183; in stock')+
+          prodCard('#D9C7D6','Blush chanderi saree','&#8377;12,400 &#183; 2 left')+
+          prodCard('#CFD6C8','Sage organza lehenga','&#8377;18,750 &#183; in stock')+
+          '<div class="novain"><span style="flex:1">The first one, in medium</span><span class="sendbtn">&#10148;</span></div></div>';
+        btns=[{label:'Pick the first one',go:function(){ccStep=2;ccRender();}}];
+      } else if(ccStep===2){
+        body='<div class="novabody"><div style="font-size:13px;color:#4A3C3A">Ivory silk-blend kurta set, medium. '+
+          'Pay here and I will keep the conversation open for alterations.</div>'+
+          '<div class="prod" style="flex-direction:column;gap:7px">'+
+          '<div style="display:flex;justify-content:space-between;width:100%"><span>Ivory silk-blend kurta set &#183; M</span>'+
+          '<b>&#8377;8,990</b></div>'+
+          '<div style="display:flex;gap:7px;width:100%">'+
+          '<span style="flex:1;border:1px solid #E3DBD8;border-radius:7px;padding:7px;text-align:center;font-size:12px">UPI</span>'+
+          '<span style="flex:1;border:1px solid #E3DBD8;border-radius:7px;padding:7px;text-align:center;font-size:12px">Reserve Pay</span>'+
+          '<span style="flex:1;border:1px solid #5A2A2A;background:#5A2A2A;color:#fff;border-radius:7px;padding:7px;'+
+          'text-align:center;font-size:12px">Saved card</span></div>'+
+          '<div style="font-size:11.5px;color:#9A8C88">One-time authorisation. Nothing is charged without your approval.</div>'+
+          '</div></div>';
+        btns=[{label:'Pay with the saved card',go:function(){ccStep=3;ccRender();}}];
+      } else {
+        body='<div class="novabody"><div style="margin:auto;text-align:center">'+
+          '<div class="tickbig" style="margin:0 auto 9px">&#10003;</div>'+
+          '<div style="font-weight:700">Paid &#8377;8,990</div>'+
+          '<p style="font-size:12.5px;color:#7A6A66;margin:6px 0 0">Order confirmed in the same conversation. '+
+          'Discovery to checkout, without a single page reload.</p></div></div>';
+        btns=[{label:'Run it again',ghost:true,go:function(){ccStep=0;ccRender();}}];
+      }
+      S.innerHTML=head+body+'<div class="novafoot">Powered by CCAvenue &#183; Nova can make mistakes. '+
+        'Payments always require your explicit approval.</div>';
+    } else {
+      var h2='<div class="novahead"><span style="width:18px;height:18px;border-radius:5px;background:#5A2A2A;'+
+        'color:#fff;display:grid;place-items:center;font-size:11px">&#10022;</span> Registration form builder</div>';
+      if(ccStep===0){
+        body='<div class="novabody"><div class="novahero"><h4 style="font-size:19px">Describe the form you need</h4>'+
+          '<p style="font-size:13px;color:#7A6A66;margin:7px 0 0">No fields to drag, no developer. The assistant builds '+
+          'it and hosts it for you.</p></div>'+
+          '<div class="novain"><span style="flex:1">A registration form for a course, with fees for a 4-week and a '+
+          '10-week option.</span><span class="sendbtn">&#10148;</span></div></div>';
+        btns=[{label:'Send',go:function(){ccStep=1;ccRender();}}];
+      } else if(ccStep===1){
+        body='<div class="novabody"><div style="font-size:13px;color:#4A3C3A">Working on it:</div>'+
+          '<div class="filelist" style="border:0;padding:0">'+
+          '<div><span>&#10003;</span>Connecting to CCAvenue Remote MCP</div>'+
+          '<div><span>&#10003;</span>Creating a secure hosted form</div>'+
+          '<div><span>&#10003;</span>Adding the fee options as a paid field</div></div>'+
+          '<div class="prod" style="flex-direction:column;gap:6px;font-size:12.5px">'+
+          formRow('Full name','J. Smith')+formRow('Email address','jsmith@test.com')+
+          formRow('Mobile number','9876543210')+
+          formRow('Address','224, MG Road, Bengaluru 560001')+
+          formRow('Program track','Cloud &amp; DevOps')+
+          formRow('Program duration','10-Week Program &#183; &#8377;1,999')+
+          '</div></div>';
+        btns=[{label:'Publish it',go:function(){ccStep=2;ccRender();}}];
+      } else {
+        body='<div class="novabody"><div style="font-size:13px;color:#4A3C3A">&#127881; Your registration form is now '+
+          'live. Anyone with the link can open it and fill it out.</div>'+
+          '<div class="prod" style="flex-direction:column;gap:9px;align-items:flex-start">'+
+          '<span class="livepill"><span class="dotlive"></span> LIVE</span>'+
+          '<div style="display:flex;gap:8px;align-items:center;width:100%;flex-wrap:wrap">'+
+          '<span style="flex:1 1 180px;font-family:var(--mono);font-size:11px;color:#4A3C3A;border:1px solid #E3DBD8;'+
+          'border-radius:7px;padding:7px;overflow:hidden;text-overflow:ellipsis">forms.ccavenue.com/online-learning-registration</span>'+
+          '<span style="border:1px solid #E3DBD8;border-radius:7px;padding:7px 11px;font-size:12px">Copy link</span></div>'+
+          '<div style="display:flex;gap:11px;align-items:center">'+qrBlock()+
+          '<span style="font-size:12px;color:#7A6A66">Securely hosted and powered by CCAvenue. Payments collected on '+
+          'the same link.</span></div></div></div>';
+        btns=[{label:'Start over',ghost:true,go:function(){ccStep=0;ccRender();}}];
+      }
+      S.innerHTML=h2+body+'<div class="novafoot">Built through CCAvenue&#39;s Remote MCP server &#183; announced, '+
+        'still being developed</div>';
+    }
+    ctl($('#cc-ctl'),btns);
+  }
+  function prodCard(col,name,meta){
+    return '<div class="prod"><span class="swatch" style="background:'+col+'"></span>'+
+      '<span><b>'+name+'</b><br><span style="color:#7A6A66">'+meta+'</span></span></div>';
+  }
+  function formRow(k,v){
+    return '<div style="display:flex;justify-content:space-between;gap:10px;width:100%">'+
+      '<span style="color:#7A6A66">'+k+'</span><span>'+v+'</span></div>';
+  }
+  toggle($('#cc-m1'),$('#cc-m2'),function(){ccMode='nova';ccStep=0;ccRender();},function(){ccMode='form';ccStep=0;ccRender();});
+  ccRender();
+
+  /* ============ 7. AtOM ============ */
+  var miles=[
+    {h:'Intake',p:'The request is read, matched to the specification and turned into a structured change.'},
+    {h:'Impact',p:'Which participants are affected, what each has to build, and what must be tested.'},
+    {h:'Testing',p:'Test cases generated and run against each participant&#39;s sandbox.'},
+    {h:'Certification',p:'Results packaged, signed and filed as the certified change.'}
+  ];
+  var decisions=[
+    {m:0,q:'The change touches the checkout flow. Approve the scope as read?',y:'Scope approved'},
+    {m:1,q:'42 participants are affected; 6 need code changes. Notify them now?',y:'Participants notified'},
+    {m:2,q:'Two banks failed a test case on mandate limits. Hold, or let them retry?',y:'Retry allowed, with a deadline'},
+    {m:2,q:'Retest passed. Accept the evidence bundle?',y:'Evidence accepted'},
+    {m:3,q:'Sign and publish the certified change?',y:'Certified and published'}
+  ];
+  var aDone=0, aCR='';
+  function stamp(){ var d=new Date(); return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2); }
+  function atRender(){
+    var cur = aDone<decisions.length? decisions[aDone].m : 3;
+    $('#at-miles').innerHTML=miles.map(function(m,i){
+      var done = aDone>=decisions.length ? true : i<cur;
+      return '<div class="mile '+(done?'done':(i===cur?'on':''))+'"><h5>'+(i+1)+'. '+m.h+'</h5><p>'+m.p+'</p></div>';
+    }).join('');
+    $('#at-count').textContent=aDone+' / 5';
+    var d=$('#at-decide');
+    if(aDone<decisions.length){
+      var dec=decisions[aDone];
+      d.innerHTML='<p><strong>Your decision:</strong> '+dec.q+'</p>';
+      var b=el('button','btn','Decide');
+      b.addEventListener('click',function(){
+        var L=$('#at-log');
+        L.appendChild(el('div','','<span class="sig">signed</span><span>'+stamp()+' &#183; '+dec.y+'</span>'));
+        L.scrollTop=L.scrollHeight; aDone++; atRender();
+      });
+      d.appendChild(b);
+    } else {
+      d.innerHTML='<p><strong>Certified.</strong> &quot;'+aCR+'&quot; is signed and published, with every step kept as '+
+        'a machine-readable record. On the stand this took about four minutes.</p>';
+    }
+  }
+  [].slice.call(document.querySelectorAll('#at-pick .crcard')).forEach(function(b){
+    b.addEventListener('click',function(){
+      aCR=b.getAttribute('data-cr'); aDone=0;
+      $('#at-pick').hidden=true; $('#at-run').hidden=false;
+      $('#at-log').innerHTML='';
+      $('#at-log').appendChild(el('div','','<span class="sig">signed</span><span>'+stamp()+
+        ' &#183; Request received: '+aCR+'</span>'));
+      atRender();
+    });
+  });
+  $('#at-reset').addEventListener('click',function(){ $('#at-pick').hidden=false; $('#at-run').hidden=true; });
+})();
+</script>
